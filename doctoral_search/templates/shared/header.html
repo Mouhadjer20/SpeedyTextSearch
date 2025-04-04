@@ -1,3 +1,9 @@
-<div style="hight:30px">
-Header
-</div>
+<header class="bg-dark text-white py-3 shadow">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h2 class="mb-0">📚 Research Library</h2>
+        <nav>
+            <a href="{% url 'search' %}" class="text-white text-decoration-none me-3">🔍 Search</a>
+            <a href="{% url 'upload' %}" class="text-white text-decoration-none">⬆️ Upload</a>
+        </nav>
+    </div>
+</header>

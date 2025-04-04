@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,7 +31,7 @@ ALLOWED_HOSTS = []
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'http://localhost:9200',  # Elasticsearch host
+        'hosts': [config('ELASTICSEARCH_URL', default='http://localhost:9200')]  # Elasticsearch URL
     },
 }
 
@@ -44,7 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     'document.apps.DocumentConfig',
+    'search.apps.SearchConfig',
+    'upload.apps.UploadConfig',
     'django_elasticsearch_dsl',
     
 ]
@@ -64,7 +68,7 @@ ROOT_URLCONF = 'doctoral_search.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

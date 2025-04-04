@@ -7,3 +7,4 @@ def search_view(request):
     if query is not None :
         documents =  lookup(query)
         return render(request, template_name="search/search.html", context={'query': query, 'documents': documents})
+    return render(request, template_name="search/search.html", context={'query': '', 'documents': ''})

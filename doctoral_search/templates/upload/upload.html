@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container mt-5">
+    <h3 class="mb-4">⬆️ Upload a New Research Document</h3>
+
+    <!-- Upload Form -->
+    <form method="POST" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="title" class="form-label">📌 Title</label>
+            <input type="text" name="title" class="form-control" id="title" required placeholder="Enter document title">
+        </div>
+
+        <div class="mb-3">
+            <label for="author" class="form-label">👤 Author</label>
+            <input type="text" name="author" class="form-control" id="author" required placeholder="Enter author's name">
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">📝 Description</label>
+            <textarea name="description" class="form-control" id="description" rows="3" placeholder="Write a short description..."></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="file_path" class="form-label">📁 Select File</label>
+            <input type="file" name="file_path" class="form-control" id="file_path" accept=".pdf,.doc,.docx" required>
+        </div>
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-success">
+                🚀 Upload Document
+            </button>
+        </div>
+    </form>
+
+    {% if message %}
+        <div class="alert alert-info mt-4">{{ message }}</div>
+    {% endif %}
+</div>
+{% endblock %}

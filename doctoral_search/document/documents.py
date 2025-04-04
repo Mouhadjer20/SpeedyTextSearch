@@ -13,16 +13,10 @@ class ResearchDocumentDocument(Document):
     file_size = fields.IntegerField(attr='extract_file_size')
     file_type = fields.TextField(attr='extract_file_type')
     file_hash = fields.TextField(attr='compute_file_hash')
-
-    # Special handling for keywords
-    keywords = fields.KeywordField(
-        attr='keywords',
-        multi=True  # This will automatically split on commas
-    )
+    keywords = fields.KeywordField(attr='get_keywords')
 
     class Django:
         model = ResearchDocument
-        model.keywords
         fields = [
             'title',
             'description',

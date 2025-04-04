@@ -10,47 +10,33 @@ class ResearchDocument(models.Model):
     title = models.CharField(max_length=255, verbose_name="Title", blank=False, null=False)
     description = models.TextField(verbose_name="Description", blank=True, null=True)
     author = models.CharField(max_length=255, verbose_name="Author", blank=False, null=False)
-    
-    keywords = models.JSONField(default=list, blank=True)
+    keywords = models.TextField(help_text="put between each tow keywords ',' without any spaces")  # Store as comma-separated text
+    #keywords_json = models.JSONField(default=list, blank=True, null=True) # Store as a list
     publication_date = models.DateField(blank=False, null=False)
     university = models.CharField(max_length=255, blank=False, null=False)
 
-    file = models.FileField(upload_to='uploads/research_papers/%y/%m/%d')
-
-    file_size = models.BigIntegerField(blank=True, null=True, editable=False)
-    file_type = models.CharField(max_length=50, blank=True, null=True, editable=False)
-    file_hash = models.CharField(max_length=64, blank=True, null=True, editable=False)
+    file = models.FileField(upload_to='documents/')
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def save(self, *args, **kwargs):
-       
-        if self.file:
-            # Compute File Hash (MD5)
-            self.file_hash = hashlib.md5(self.file.read()).hexdigest()
-            
-            # Extract File Metadata
-            self.file_size = self.file.size
-            self.file_type = self.file.name.split('.')[-1].lower()
+    def get_keywords(self):
+        """Return keywords as a list"""
+        return self.keywords
+    
+    def get_absolute_url(self):
+        return f"{self.file.path}" #reverse("model_detail", kwargs={"pk": self.pk})
 
-        super().save(*args, **kwargs)
+    def compute_file_hash(self) -> str:
+        """Compute File Hash (MD5)"""
+        return hashlib.md5(self.file.read()).hexdigest()
+    
+    def extract_file_size(self):
+        """Extract File Size"""
+        return self.file.size
 
-        # Index document in Elasticsearch only if it's a new entry
-        if not self.pk:
-            document_data = {
-                "title": self.title,
-                "description": self.description or None,
-                "author": self.author,
-                "keywords": self.keywords,
-                "publication_date": self.publication_date.isoformat(),
-                "university": self.university,
-                "file_path": self.file.url,
-                "file_size": self.file_size,
-                "file_hash": self.file_hash,
-                "file_type": self.file_type,
-                "created_at": self.created_at.isoformat(),
-            }
-            es_client.index(index=INDEX_NAME, id=self.id, document=document_data)
+    def extract_file_type(self):    
+        """Extract File Type"""
+        return self.file.name.split('.')[-1].lower()
 
     def __str__(self):
         return self.title
