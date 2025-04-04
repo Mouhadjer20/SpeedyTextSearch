@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block body %}
+    <form method="GET" action="{% url 'search' %}">
+        <input type="text" name="q" value="{{ query|default:'' }}">
+        <input type="submit" value="Search">
+    </form>
+    
+    {% if query %}
+        <h1>results for "{{ query }}"</h1>
+        {% if documents %}
+            <ul>
+            {% for document in documents.results %}
+                <li>
+                    <h4>{{ document.title }}</h4>
+                    <p>Author: {{ document.author }}</p>
+                    {% if document.description %}
+                    <p>{{ document.description }}</p>
+                    {% endif %}
+                    <a href="file://{{ document.file_path }}" target="_blank" rel="noopener noreferrer">Open</a>
+                    <p>Size: {{ document.file_size | filesizeformat}}
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No documents found matching your search.</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}
