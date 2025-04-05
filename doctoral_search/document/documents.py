@@ -13,6 +13,7 @@ class ResearchDocumentDocument(Document):
     file_size = fields.IntegerField(attr='extract_file_size')
     file_type = fields.TextField(attr='extract_file_type')
     file_hash = fields.TextField(attr='compute_file_hash')
+    file_content = fields.TextField(attr='get_file_content')
     keywords = fields.KeywordField(attr='get_keywords')
 
     class Django:

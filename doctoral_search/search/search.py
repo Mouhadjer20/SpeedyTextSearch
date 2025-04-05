@@ -1,6 +1,5 @@
 from elasticsearch import Elasticsearch
 from django_elasticsearch_dsl.search import Search
-from decouple import config
 from doctoral_search.settings import ELASTICSEARCH_DSL
 import json
 
@@ -8,7 +7,7 @@ import json
 client = Elasticsearch(hosts=ELASTICSEARCH_DSL['default']['hosts'])
 INDEXES = ['research_library']
 
-def lookup(query, index=INDEXES, fields=['title', 'description', 'author', 'keywords', 'university']):
+def lookup(query, index=INDEXES, fields=['title', 'description', 'author', 'keywords', 'university', 'file_content']):
     if not query:
         return {'error': 'No query provided', 'results': []}
     

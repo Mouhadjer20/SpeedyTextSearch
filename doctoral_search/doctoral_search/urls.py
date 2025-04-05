@@ -19,11 +19,9 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from search.views import search_view
-from upload.views import upload_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('search/', search_view, name='search'),
-    path('uploaded/', include('document.urls'), name='uploaded'),
-    path('upload/', upload_view, name='upload'),
+    path('', include('document.urls'), name='uploaded'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
