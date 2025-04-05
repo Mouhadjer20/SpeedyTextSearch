@@ -175,4 +175,5 @@ cython_debug/
 .pypirc
 
 # Files
-index.py
+index.py 
+media/
